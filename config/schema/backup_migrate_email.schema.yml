@@ -1,0 +1,19 @@
+backup_migrate_email.settings:
+  type: config_object
+  label: "Backup Migrate Email settings"
+  mapping:
+    email:
+      type: email
+      label: "Email Address"
+    from:
+      type: email
+      label: "From Email Address"
+    subject:
+      type: string
+      label: "Email Subject"
+    body:
+      type: text
+      label: "Email Body"
+    max_size:
+      type: string
+      label: "Maximum File Size"

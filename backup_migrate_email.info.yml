@@ -1,0 +1,7 @@
+name: "Backup Migrate Email Destination"
+type: module
+description: "Provides an email destination plugin for Backup and Migrate module."
+package: Backup and Migrate
+core_version_requirement: ^11
+dependencies:
+  - backup_migrate

@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * @file
+ * Backup Migrate Email module file.
+ */
+
+use Drupal\Core\Mail\MailFormatHelper;
+
+/**
+ * Implements hook_mail().
+ */
+function backup_migrate_email_mail($key, &$message, $params)
+{
+    switch ($key) {
+        case 'backup_file':
+            $message['subject'] = $params['subject'];
+            $message['body'][] = $params['body'];
+
+            // Add attachment if provided.
+            if (isset($params['attachment'])) {
+                $attachment = $params['attachment'];
+
+                // Try different attachment methods for compatibility
+                if (isset($attachment['filepath']) && file_exists($attachment['filepath'])) {
+                    // File-based attachment (preferred)
+                    $message['attachments'][] = [
+                        'filename' => $attachment['filename'],
+                        'filepath' => $attachment['filepath'],
+                        'mimetype' => $attachment['mimetype'],
+                    ];
+                } elseif (isset($attachment['content'])) {
+                    // Content-based attachment (fallback)
+                    $message['attachments'][] = [
+                        'filename' => $attachment['filename'],
+                        'content' => $attachment['content'],
+                        'mimetype' => $attachment['mimetype'],
+                    ];
+                }
+
+                // Also set in params for modules that look there
+                $message['params']['attachments'][] = $attachment;
+            }
+            break;
+    }
+}

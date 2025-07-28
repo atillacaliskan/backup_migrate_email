@@ -1,0 +1,5 @@
+services:
+  backup_migrate.destination.email:
+    class: Drupal\backup_migrate_email\Plugin\BackupMigrateDestination\EmailDestination
+    tags:
+      - { name: backup_migrate_destination }

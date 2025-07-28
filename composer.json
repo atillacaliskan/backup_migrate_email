@@ -1,0 +1,15 @@
+{
+    "name": "atillacaliskan/backup_migrate_email",
+    "description": "Provides an email destination plugin for Backup and Migrate module.",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "drupal/backup_migrate": "^5.1",
+        "drupal/core": "^11"
+    },
+    "extra": {
+        "installer-name": "backup_migrate_email"
+    }
+}
