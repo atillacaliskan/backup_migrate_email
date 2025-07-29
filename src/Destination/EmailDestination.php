@@ -3,6 +3,7 @@
 namespace Drupal\backup_migrate_email\Destination;
 
 use Drupal\backup_migrate\Core\Config\ConfigurableInterface;
+use Drupal\backup_migrate\Core\Destination\ListableDestinationInterface;
 use Drupal\backup_migrate\Core\Destination\WritableDestinationInterface;
 use Drupal\backup_migrate\Core\File\BackupFileInterface;
 use Drupal\backup_migrate\Core\File\BackupFileReadableInterface;
@@ -13,7 +14,7 @@ use Drupal\Core\StringTranslation\ByteSizeMarkup;
 /**
  * An email destination for sending backup files via email.
  */
-class EmailDestination extends PluginBase implements WritableDestinationInterface, ConfigurableInterface
+class EmailDestination extends PluginBase implements WritableDestinationInterface, ListableDestinationInterface, ConfigurableInterface
 {
 
     /**
@@ -328,5 +329,72 @@ class EmailDestination extends PluginBase implements WritableDestinationInterfac
             \Drupal::logger('backup_migrate_email')->error('Failed to create encrypted ZIP file.');
             return ['content' => $content, 'filename' => $filename];
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportedOps()
+    {
+        return [
+            'saveFile' => [],
+            // Note: We don't advertise listFiles capabilities for UI purposes
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function listFiles(array $filters = [])
+    {
+        // Email destinations don't store files, return empty array
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function queryFiles(array $filters = [], $sort = 'datestamp', $sort_direction = SORT_DESC, $count = 100, $start = 0)
+    {
+        // Email destinations don't store files, return empty array
+        return [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countFiles()
+    {
+        // Email destinations don't store files
+        return 0;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fileExists($id)
+    {
+        // Email destinations don't store files
+        return FALSE;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteFile($id)
+    {
+        // Email destinations don't store files, nothing to delete
+        return FALSE;
+    }
+
+    /**
+     * Check if this destination stores files for listing purposes.
+     * 
+     * @return bool
+     *   FALSE because email destinations don't store files.
+     */
+    public function isStorageDestination()
+    {
+        return FALSE;
     }
 }

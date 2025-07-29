@@ -44,3 +44,26 @@ function backup_migrate_email_mail($key, &$message, $params)
             break;
     }
 }
+
+/**
+ * Implements hook_backup_migrate_controller_listall_alter().
+ * 
+ * This is a custom hook that we'll implement by overriding the controller.
+ */
+/**
+ * Implements hook_entity_query_alter().
+ */
+function backup_migrate_email_entity_query_alter(\Drupal\Core\Entity\Query\QueryInterface $query)
+{
+    // Check if this is a backup_migrate_destination query
+    if ($query->getEntityTypeId() === 'backup_migrate_destination') {
+        // Check if we're on the backup listing page
+        $route_match = \Drupal::routeMatch();
+        $route_name = $route_match->getRouteName();
+
+        if ($route_name === 'backup_migrate.backups') {
+            // Exclude email destinations from the query using NOT IN
+            $query->condition('type', ['Email'], 'NOT IN');
+        }
+    }
+}
