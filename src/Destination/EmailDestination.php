@@ -13,6 +13,12 @@ use Drupal\Core\StringTranslation\ByteSizeMarkup;
 
 /**
  * An email destination for sending backup files via email.
+ * 
+ * Features:
+ * - Multiple recipient support
+ * - File size validation
+ * - Optional encryption with password protection
+ * - Filtered from backup listings (non-storage destination)
  */
 class EmailDestination extends PluginBase implements WritableDestinationInterface, ListableDestinationInterface, ConfigurableInterface
 {
